@@ -72,6 +72,8 @@ namespace shooter.Desktop
         {
             previousKeyboardState = currentKeyboardState;
             currentKeyboardState = Keyboard.GetState();
+            previousMouseState = currentMouseState;
+            currentMouseState = Mouse.GetState();
 
             UpdatePlayer(gameTime);
             base.Update(gameTime);
@@ -96,6 +98,15 @@ namespace shooter.Desktop
                 player.Position.X += playerMoveSpeed;
             }
 
+            if (currentMouseState.LeftButton == ButtonState.Pressed)
+            {
+                Vector2 mousePos = new Vector2(currentMouseState.X, currentMouseState.Y);
+                Vector2 posDelta = mousePos - player.Position;
+                posDelta.Normalize();
+                posDelta = posDelta * playerMoveSpeed;
+
+                player.Position += posDelta;
+            }
             player.Position.X = MathHelper.Clamp(player.Position.X, 0, GraphicsDevice.Viewport.Width - player.Width);
             player.Position.Y = MathHelper.Clamp(player.Position.Y, 0, GraphicsDevice.Viewport.Height - player.Height);
         }
