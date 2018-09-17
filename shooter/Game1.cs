@@ -12,6 +12,11 @@ namespace shooter.Desktop
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
+        KeyboardState currentKeyboardState;
+        KeyboardState previousKeyboardState;
+        MouseState currentMouseState;
+        MouseState previousMouseState;
+        float playerMoveSpeed;
 
         public Game1()
         {
@@ -32,6 +37,8 @@ namespace shooter.Desktop
             float yPos = GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2;
             Vector2 playerPos = new Vector2(xPos, yPos);
             player.Initalize(Content.Load<Texture2D>("Graphics\\player"), playerPos);
+
+            playerMoveSpeed = 8.0f;
             base.Initialize();
         }
 
@@ -63,12 +70,34 @@ namespace shooter.Desktop
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            previousKeyboardState = currentKeyboardState;
+            currentKeyboardState = Keyboard.GetState();
 
-            // TODO: Add your update logic here
-
+            UpdatePlayer(gameTime);
             base.Update(gameTime);
+        }
+
+        private void UpdatePlayer(GameTime gameTime) 
+        {
+            if (currentKeyboardState.IsKeyDown(Keys.W))
+            {
+                player.Position.Y -= playerMoveSpeed;
+            }
+            if (currentKeyboardState.IsKeyDown(Keys.S)) 
+            {
+                player.Position.Y += playerMoveSpeed;
+            }
+            if (currentKeyboardState.IsKeyDown(Keys.A))
+            {
+                player.Position.X -= playerMoveSpeed;
+            }
+            if (currentKeyboardState.IsKeyDown(Keys.D))
+            {
+                player.Position.X += playerMoveSpeed;
+            }
+
+            player.Position.X = MathHelper.Clamp(player.Position.X, 0, GraphicsDevice.Viewport.Width - player.Width);
+            player.Position.Y = MathHelper.Clamp(player.Position.Y, 0, GraphicsDevice.Viewport.Height - player.Height);
         }
 
         /// <summary>
