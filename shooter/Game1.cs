@@ -11,6 +11,7 @@ namespace shooter.Desktop
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Player player;
 
         public Game1()
         {
@@ -26,8 +27,11 @@ namespace shooter.Desktop
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
+            player = new Player();
+            float xPos = GraphicsDevice.Viewport.TitleSafeArea.X;
+            float yPos = GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2;
+            Vector2 playerPos = new Vector2(xPos, yPos);
+            player.Initalize(Content.Load<Texture2D>("Graphics\\player"), playerPos);
             base.Initialize();
         }
 
@@ -74,9 +78,9 @@ namespace shooter.Desktop
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-
+            spriteBatch.Begin();
+            player.Draw(spriteBatch);
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
