@@ -36,7 +36,22 @@ namespace shooter.Desktop
             float xPos = GraphicsDevice.Viewport.TitleSafeArea.X;
             float yPos = GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2;
             Vector2 playerPos = new Vector2(xPos, yPos);
-            player.Initalize(Content.Load<Texture2D>("Graphics\\player"), playerPos);
+            Animation playerAnimation = new Animation();
+            Texture2D playerTexture = Content.Load<Texture2D>("Graphics\\shipAnimation");
+            playerAnimation.Initialize(
+                playerTexture,
+                Vector2.Zero,
+                115,
+                69,
+                8,
+                60, 
+                Color.White, 
+                1f, 
+                true);
+            Vector2 playerPosition = new Vector2(
+                GraphicsDevice.Viewport.TitleSafeArea.X,
+                GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
+            player.Initialize(playerAnimation, playerPosition);
 
             playerMoveSpeed = 8.0f;
             base.Initialize();
@@ -109,6 +124,7 @@ namespace shooter.Desktop
             }
             player.Position.X = MathHelper.Clamp(player.Position.X, 0, GraphicsDevice.Viewport.Width - player.Width);
             player.Position.Y = MathHelper.Clamp(player.Position.Y, 0, GraphicsDevice.Viewport.Height - player.Height);
+            player.Update(gameTime);
         }
 
         /// <summary>

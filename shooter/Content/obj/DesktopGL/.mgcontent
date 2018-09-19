@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/player.png</File>
+    <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/bgLayer1.png</File>
+    <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/bgLayer2.png</File>
+    <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/endMenu.png</File>
+    <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/explosion.png</File>
+    <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/gameFont.spritefont</File>
+    <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/laser.png</File>
+    <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/mainbackground.png</File>
+    <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/mainMenu.png</File>
+    <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/mine.png</File>
+    <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/mineAnimation.png</File>
+    <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/shipAnimation.png</File>
+  </SourceFiles>
+</SourceFileCollection>
