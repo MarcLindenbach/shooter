@@ -17,6 +17,11 @@ namespace shooter.Desktop
         MouseState currentMouseState;
         MouseState previousMouseState;
         float playerMoveSpeed;
+        Texture2D mainBackground;
+        Rectangle rectBackground;
+        float scale = 1f;
+        ParallaxingBackground bgLayer1;
+        ParallaxingBackground bgLayer2;
 
         public Game1()
         {
@@ -52,8 +57,11 @@ namespace shooter.Desktop
                 GraphicsDevice.Viewport.TitleSafeArea.X,
                 GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
             player.Initialize(playerAnimation, playerPosition);
-
             playerMoveSpeed = 8.0f;
+
+            bgLayer1 = new ParallaxingBackground();
+            bgLayer2 = new ParallaxingBackground();
+            rectBackground = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             base.Initialize();
         }
 
@@ -65,8 +73,9 @@ namespace shooter.Desktop
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
+            bgLayer1.Initialize(Content, "Graphics/bgLayer1", GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, -1);
+            bgLayer2.Initialize(Content, "Graphics/bgLayer2", GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, -2);
+            mainBackground = Content.Load<Texture2D>("Graphics/mainbackground");
         }
 
         /// <summary>
@@ -91,6 +100,9 @@ namespace shooter.Desktop
             currentMouseState = Mouse.GetState();
 
             UpdatePlayer(gameTime);
+
+            bgLayer1.Update(gameTime);
+            bgLayer2.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -122,8 +134,12 @@ namespace shooter.Desktop
 
                 player.Position += posDelta;
             }
-            player.Position.X = MathHelper.Clamp(player.Position.X, 0, GraphicsDevice.Viewport.Width - player.Width);
-            player.Position.Y = MathHelper.Clamp(player.Position.Y, 0, GraphicsDevice.Viewport.Height - player.Height);
+            player.Position.X = MathHelper.Clamp(
+                player.Position.X, 0, 
+                GraphicsDevice.Viewport.Width - player.Width);
+            player.Position.Y = MathHelper.Clamp(
+                player.Position.Y, 0, 
+                GraphicsDevice.Viewport.Height - player.Height);
             player.Update(gameTime);
         }
 
@@ -135,6 +151,9 @@ namespace shooter.Desktop
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
+            spriteBatch.Draw(mainBackground, rectBackground, Color.White);
+            bgLayer1.Draw(spriteBatch);
+            bgLayer2.Draw(spriteBatch);
             player.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
