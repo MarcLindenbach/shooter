@@ -67,8 +67,8 @@ namespace shooter
 
             sourceRect = new Rectangle(currentFrame * FrameWidth, 0, FrameWidth, FrameHeight);
             destRect = new Rectangle(
-                (int)Position.X - (int)(FrameWidth * scale) / 2,
-                (int)Position.Y - (int)(FrameHeight * scale) / 2,
+                (int)Position.X,
+                (int)Position.Y,
                 (int)(FrameWidth * scale),
                 (int)(FrameHeight * scale));
         }

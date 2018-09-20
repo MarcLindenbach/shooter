@@ -51,7 +51,7 @@ namespace shooter.Desktop
                 8,
                 60, 
                 Color.White, 
-                1f, 
+                scale, 
                 true);
             Vector2 playerPosition = new Vector2(
                 GraphicsDevice.Viewport.TitleSafeArea.X,
@@ -136,10 +136,10 @@ namespace shooter.Desktop
             }
             player.Position.X = MathHelper.Clamp(
                 player.Position.X, 0, 
-                GraphicsDevice.Viewport.Width - player.Width);
+                GraphicsDevice.Viewport.Width - player.PlayerAnimation.FrameWidth * scale);
             player.Position.Y = MathHelper.Clamp(
                 player.Position.Y, 0, 
-                GraphicsDevice.Viewport.Height - player.Height);
+                GraphicsDevice.Viewport.Height - player.PlayerAnimation.FrameHeight * scale);
             player.Update(gameTime);
         }
 
