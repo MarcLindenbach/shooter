@@ -26,10 +26,11 @@ namespace shooter
         public void Update(GameTime gameTime)
         {
             Position.X += Speed;
+            Position.Y = (float)(Math.Sin((Double)Position.X / 100) * 100) + StartPosition.Y;
 
             if (Position.X < -EnemyAnimation.FrameWidth)
             {
-                Position = StartPosition;
+                Position.X = StartPosition.X;
             }
             EnemyAnimation.Position = Position;
             EnemyAnimation.Update(gameTime);

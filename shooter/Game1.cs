@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -73,9 +74,10 @@ namespace shooter.Desktop
                 Color.White, 
                 scale, 
                 true);
+            Random random = new Random();
             Vector2 enemyPosition = new Vector2(
                 GraphicsDevice.Viewport.TitleSafeArea.Width,
-                GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
+                random.Next(GraphicsDevice.Viewport.TitleSafeArea.Height - enemyAnimation.FrameHeight));
             enemy.Initialize(enemyAnimation, enemyPosition, -3);
 
             bgLayer1 = new ParallaxingBackground();
