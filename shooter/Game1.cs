@@ -12,6 +12,7 @@ namespace shooter.Desktop
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
+        Enemy enemy;
         KeyboardState currentKeyboardState;
         KeyboardState previousKeyboardState;
         MouseState currentMouseState;
@@ -58,6 +59,24 @@ namespace shooter.Desktop
                 GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
             player.Initialize(playerAnimation, playerPosition);
             playerMoveSpeed = 8.0f;
+
+            enemy = new Enemy();
+            Animation enemyAnimation = new Animation();
+            Texture2D enemyTexture = Content.Load<Texture2D>("Graphics\\mineAnimation");
+            enemyAnimation.Initialize(
+                enemyTexture,
+                Vector2.Zero,
+                47,
+                61,
+                8,
+                60, 
+                Color.White, 
+                scale, 
+                true);
+            Vector2 enemyPosition = new Vector2(
+                GraphicsDevice.Viewport.TitleSafeArea.Width,
+                GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
+            enemy.Initialize(enemyAnimation, enemyPosition, -3);
 
             bgLayer1 = new ParallaxingBackground();
             bgLayer2 = new ParallaxingBackground();
@@ -141,6 +160,7 @@ namespace shooter.Desktop
                 player.Position.Y, 0, 
                 GraphicsDevice.Viewport.Height - player.PlayerAnimation.FrameHeight * scale);
             player.Update(gameTime);
+            enemy.Update(gameTime);
         }
 
         /// <summary>
@@ -155,6 +175,7 @@ namespace shooter.Desktop
             bgLayer1.Draw(spriteBatch);
             bgLayer2.Draw(spriteBatch);
             player.Draw(spriteBatch);
+            enemy.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }
