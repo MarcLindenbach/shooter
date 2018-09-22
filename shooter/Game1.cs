@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -13,7 +14,7 @@ namespace shooter.Desktop
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
-        Enemy enemy;
+        List<Enemy> enemies;
         KeyboardState currentKeyboardState;
         KeyboardState previousKeyboardState;
         MouseState currentMouseState;
@@ -22,6 +23,7 @@ namespace shooter.Desktop
         Texture2D mainBackground;
         Rectangle rectBackground;
         float scale = 1f;
+        int enemyCount = 8;
         ParallaxingBackground bgLayer1;
         ParallaxingBackground bgLayer2;
 
@@ -61,24 +63,14 @@ namespace shooter.Desktop
             player.Initialize(playerAnimation, playerPosition);
             playerMoveSpeed = 8.0f;
 
-            enemy = new Enemy();
-            Animation enemyAnimation = new Animation();
-            Texture2D enemyTexture = Content.Load<Texture2D>("Graphics\\mineAnimation");
-            enemyAnimation.Initialize(
-                enemyTexture,
-                Vector2.Zero,
-                47,
-                61,
-                8,
-                60, 
-                Color.White, 
-                scale, 
-                true);
+            enemies = new List<Enemy>();
             Random random = new Random();
-            Vector2 enemyPosition = new Vector2(
-                GraphicsDevice.Viewport.TitleSafeArea.Width,
-                random.Next(GraphicsDevice.Viewport.TitleSafeArea.Height - enemyAnimation.FrameHeight));
-            enemy.Initialize(enemyAnimation, enemyPosition, -3);
+            for (int i = 0; i < enemyCount; i++)
+            {
+                Enemy enemy = new Enemy();
+                enemy.Initialize(this, random);
+                enemies.Add(enemy);
+            }
 
             bgLayer1 = new ParallaxingBackground();
             bgLayer2 = new ParallaxingBackground();
@@ -121,6 +113,7 @@ namespace shooter.Desktop
             currentMouseState = Mouse.GetState();
 
             UpdatePlayer(gameTime);
+            enemies.ForEach(enemy => enemy.Update(gameTime));
 
             bgLayer1.Update(gameTime);
             bgLayer2.Update(gameTime);
@@ -162,7 +155,6 @@ namespace shooter.Desktop
                 player.Position.Y, 0, 
                 GraphicsDevice.Viewport.Height - player.PlayerAnimation.FrameHeight * scale);
             player.Update(gameTime);
-            enemy.Update(gameTime);
         }
 
         /// <summary>
@@ -177,7 +169,7 @@ namespace shooter.Desktop
             bgLayer1.Draw(spriteBatch);
             bgLayer2.Draw(spriteBatch);
             player.Draw(spriteBatch);
-            enemy.Draw(spriteBatch);
+            enemies.ForEach(enemy => enemy.Draw(spriteBatch));
             spriteBatch.End();
             base.Draw(gameTime);
         }
