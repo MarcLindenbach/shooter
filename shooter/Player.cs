@@ -13,6 +13,11 @@ namespace shooter
         public int Width => PlayerAnimation.FrameWidth;
         public int Height => PlayerAnimation.FrameHeight;
 
+        public int Left => (int)Position.X;
+        public int Right => (int)Position.X + Width;
+        public int Top => (int)Position.Y;
+        public int Bottom => (int)Position.Y + Height;
+
         public void Initialize(Animation animation, Vector2 position)
         {
             PlayerAnimation = animation;

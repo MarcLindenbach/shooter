@@ -154,6 +154,18 @@ namespace shooter.Desktop
             player.Position.Y = MathHelper.Clamp(
                 player.Position.Y, 0, 
                 GraphicsDevice.Viewport.Height - player.PlayerAnimation.FrameHeight * scale);
+
+            // Check for collisions with mines
+            enemies.ForEach(enemy =>
+            {
+                if (!(player.Left > enemy.Right || 
+                      player.Right < enemy.Left ||
+                      player.Top > enemy.Bottom ||
+                      player.Bottom < enemy.Top))
+                {
+                    enemy.Reset();
+                }
+            });
             player.Update(gameTime);
         }
 
@@ -168,8 +180,27 @@ namespace shooter.Desktop
             spriteBatch.Draw(mainBackground, rectBackground, Color.White);
             bgLayer1.Draw(spriteBatch);
             bgLayer2.Draw(spriteBatch);
+
+            Texture2D rect = new Texture2D(GraphicsDevice, 1, 1);
+            rect.SetData(new[] { Color.White });
+            Rectangle coords = new Rectangle(
+                (int)player.Position.X,
+                (int)player.Position.Y,
+                player.PlayerAnimation.FrameWidth,
+                player.PlayerAnimation.FrameHeight);
+            spriteBatch.Draw(rect, coords, Color.Fuchsia);
+
             player.Draw(spriteBatch);
-            enemies.ForEach(enemy => enemy.Draw(spriteBatch));
+            enemies.ForEach(enemy =>
+            {
+                Rectangle enemyCoords = new Rectangle(
+                    (int)enemy.Position.X,
+                    (int)enemy.Position.Y,
+                    enemy.EnemyAnimation.FrameWidth,
+                    enemy.EnemyAnimation.FrameHeight);
+                spriteBatch.Draw(rect, enemyCoords, Color.Fuchsia);
+                enemy.Draw(spriteBatch);
+            });
             spriteBatch.End();
             base.Draw(gameTime);
         }

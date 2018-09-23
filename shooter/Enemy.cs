@@ -13,6 +13,11 @@ namespace shooter
         public int Speed;
         public int Width => EnemyAnimation.FrameWidth;
         public int Height => EnemyAnimation.FrameHeight;
+        public int Left => (int)Position.X;
+        public int Right => (int)Position.X + Width;
+        public int Top => (int)Position.Y;
+        public int Bottom => (int)Position.Y + Height;
+
         private Random random;
         private Game game;
 
@@ -33,10 +38,10 @@ namespace shooter
                 1f, 
                 true);
             Active = true;
-            GeneratePositionAndSpeed();
+            Reset();
         }
 
-        private void GeneratePositionAndSpeed()
+        public void Reset()
         {
             Position = new Vector2(
                 game.GraphicsDevice.Viewport.Width + (random.Next(0, 5) * EnemyAnimation.FrameWidth),
@@ -52,7 +57,7 @@ namespace shooter
 
             if (Position.X < -EnemyAnimation.FrameWidth)
             {
-                GeneratePositionAndSpeed();
+                Reset();
             }
             EnemyAnimation.Position = Position;
             EnemyAnimation.Update(gameTime);
