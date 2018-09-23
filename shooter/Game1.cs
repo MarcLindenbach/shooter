@@ -26,6 +26,7 @@ namespace shooter.Desktop
         int enemyCount = 8;
         ParallaxingBackground bgLayer1;
         ParallaxingBackground bgLayer2;
+        Random random = new Random();
 
         public Game1()
         {
@@ -64,14 +65,6 @@ namespace shooter.Desktop
             playerMoveSpeed = 8.0f;
 
             enemies = new List<Enemy>();
-            Random random = new Random();
-            for (int i = 0; i < enemyCount; i++)
-            {
-                Enemy enemy = new Enemy();
-                enemy.Initialize(this, random);
-                enemies.Add(enemy);
-            }
-
             bgLayer1 = new ParallaxingBackground();
             bgLayer2 = new ParallaxingBackground();
             rectBackground = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
@@ -154,6 +147,13 @@ namespace shooter.Desktop
             player.Position.Y = MathHelper.Clamp(
                 player.Position.Y, 0, 
                 GraphicsDevice.Viewport.Height - player.PlayerAnimation.FrameHeight * scale);
+
+            while (enemies.Count < enemyCount)
+            {
+                Enemy enemy = new Enemy();
+                enemy.Initialize(this, random);
+                enemies.Add(enemy);
+            }
 
             // Check for collisions with mines
             enemies.ForEach(enemy =>
