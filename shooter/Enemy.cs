@@ -11,6 +11,7 @@ namespace shooter
         public Vector2 StartPosition;
         public bool Active;
         public int Speed;
+        public int Amplitude;
         public int Width => EnemyAnimation.FrameWidth;
         public int Height => EnemyAnimation.FrameHeight;
         public int Left => (int)Position.X;
@@ -47,13 +48,14 @@ namespace shooter
                 game.GraphicsDevice.Viewport.Width + (random.Next(0, 5) * EnemyAnimation.FrameWidth),
                 random.Next(0, game.GraphicsDevice.Viewport.Height - EnemyAnimation.FrameHeight));
             StartPosition = Position;
-            Speed = random.Next(-5, -1); 
+            Speed = random.Next(-5, -1);
+            Amplitude = random.Next(0, 100);
         }
 
         public void Update(GameTime gameTime)
         {
             Position.X += Speed;
-            Position.Y = (float)(Math.Sin((Double)Position.X / 100) * 100) + StartPosition.Y;
+            Position.Y = (float)(Math.Sin((Double)Position.X / 100) * Amplitude) + StartPosition.Y;
 
             if (Position.X < -EnemyAnimation.FrameWidth)
             {
