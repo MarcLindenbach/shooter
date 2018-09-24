@@ -23,10 +23,12 @@ namespace shooter.Desktop
         Texture2D mainBackground;
         Rectangle rectBackground;
         float scale = 1f;
-        int enemyCount = 8;
+        int startEnemyCount = 4;
+        int enemyCount = 0;
         ParallaxingBackground bgLayer1;
         ParallaxingBackground bgLayer2;
         Random random = new Random();
+        SpriteFont scoreFont;
 
         public Game1()
         {
@@ -68,6 +70,7 @@ namespace shooter.Desktop
             bgLayer1 = new ParallaxingBackground();
             bgLayer2 = new ParallaxingBackground();
             rectBackground = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            scoreFont = Content.Load<SpriteFont>("Score");
             base.Initialize();
         }
 
@@ -148,6 +151,8 @@ namespace shooter.Desktop
                 player.Position.Y, 0, 
                 GraphicsDevice.Viewport.Height - player.PlayerAnimation.FrameHeight * scale);
 
+            enemyCount = startEnemyCount + ((int)gameTime.TotalGameTime.TotalSeconds / 10);
+
             while (enemies.Count < enemyCount)
             {
                 Enemy enemy = new Enemy();
@@ -201,6 +206,7 @@ namespace shooter.Desktop
                 spriteBatch.Draw(rect, enemyCoords, Color.Fuchsia);
                 enemy.Draw(spriteBatch);
             });
+            spriteBatch.DrawString(scoreFont, String.Format("Score {0:0}", gameTime.TotalGameTime.TotalMilliseconds), new Vector2(5, 5), Color.Black);
             spriteBatch.End();
             base.Draw(gameTime);
         }
