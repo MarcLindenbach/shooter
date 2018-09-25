@@ -155,7 +155,7 @@ namespace shooter.Desktop
                       player.Top > enemy.Bottom ||
                       player.Bottom < enemy.Top))
                 {
-                    enemy.Reset();
+                    enemy.Explode();
                 }
             });
             player.Update(gameTime);
