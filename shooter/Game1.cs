@@ -17,8 +17,6 @@ namespace shooter.Desktop
         List<Enemy> enemies;
         KeyboardState currentKeyboardState;
         KeyboardState previousKeyboardState;
-        MouseState currentMouseState;
-        MouseState previousMouseState;
         float playerMoveSpeed;
         Texture2D mainBackground;
         Rectangle rectBackground;
@@ -105,8 +103,6 @@ namespace shooter.Desktop
         {
             previousKeyboardState = currentKeyboardState;
             currentKeyboardState = Keyboard.GetState();
-            previousMouseState = currentMouseState;
-            currentMouseState = Mouse.GetState();
 
             UpdatePlayer(gameTime);
             enemies.ForEach(enemy => enemy.Update(gameTime));
@@ -135,15 +131,6 @@ namespace shooter.Desktop
                 player.Position.X += playerMoveSpeed;
             }
 
-            if (currentMouseState.LeftButton == ButtonState.Pressed)
-            {
-                Vector2 mousePos = new Vector2(currentMouseState.X, currentMouseState.Y);
-                Vector2 posDelta = mousePos - player.Position;
-                posDelta.Normalize();
-                posDelta = posDelta * playerMoveSpeed;
-
-                player.Position += posDelta;
-            }
             player.Position.X = MathHelper.Clamp(
                 player.Position.X, 0, 
                 GraphicsDevice.Viewport.Width - player.PlayerAnimation.FrameWidth * scale);
