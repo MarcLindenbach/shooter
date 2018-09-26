@@ -15,6 +15,7 @@ namespace shooter.Desktop
         SpriteBatch spriteBatch;
         Player player;
         List<Enemy> enemies;
+        Lasers lasers;
         KeyboardState currentKeyboardState;
         KeyboardState previousKeyboardState;
         float playerMoveSpeed;
@@ -54,15 +55,19 @@ namespace shooter.Desktop
                 115,
                 69,
                 8,
-                60, 
-                Color.White, 
-                scale, 
+                60,
+                Color.White,
+                scale,
                 true);
             Vector2 playerPosition = new Vector2(
                 GraphicsDevice.Viewport.TitleSafeArea.X,
                 GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
             player.Initialize(playerAnimation, playerPosition);
             playerMoveSpeed = 8.0f;
+
+            lasers = new Lasers();
+            Texture2D laserTexture = Content.Load<Texture2D>("Graphics\\laser");
+            lasers.Initialise(laserTexture, GraphicsDevice.Viewport.TitleSafeArea.Width);
 
             enemies = new List<Enemy>();
             bgLayer1 = new ParallaxingBackground();
@@ -105,6 +110,7 @@ namespace shooter.Desktop
             currentKeyboardState = Keyboard.GetState();
 
             UpdatePlayer(gameTime);
+            lasers.Update(gameTime);
             enemies.ForEach(enemy => enemy.Update(gameTime));
 
             bgLayer1.Update(gameTime);
@@ -130,6 +136,10 @@ namespace shooter.Desktop
             {
                 player.Position.X += playerMoveSpeed;
             }
+            if (currentKeyboardState.IsKeyDown(Keys.Space))
+            {
+                lasers.ShootLaser(new Vector2(player.Position.X + (player.Width / 2), player.Position.Y + (player.Height / 2) - (lasers.Height / 2)));
+            }
 
             player.Position.X = MathHelper.Clamp(
                 player.Position.X, 0, 
@@ -150,6 +160,19 @@ namespace shooter.Desktop
             // Check for collisions with mines
             enemies.ForEach(enemy =>
             {
+                lasers.Positions.RemoveAll(laser =>
+                {
+                    if (!(laser.X > enemy.Right ||
+                          laser.X + lasers.Width < enemy.Left ||
+                          laser.Y > enemy.Bottom ||
+                          laser.Y + lasers.Height < enemy.Top))
+                    {
+                        enemy.Explode();
+                        return true;
+                    }
+                    return false;
+                });
+
                 if (!(player.Left > enemy.Right || 
                       player.Right < enemy.Left ||
                       player.Top > enemy.Bottom ||
@@ -183,6 +206,7 @@ namespace shooter.Desktop
             spriteBatch.Draw(rect, coords, Color.Fuchsia);
 
             player.Draw(spriteBatch);
+            lasers.Draw(spriteBatch);
             enemies.ForEach(enemy =>
             {
                 Rectangle enemyCoords = new Rectangle(

@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Animation.cs" />
     <Compile Include="Enemy.cs" />
+    <Compile Include="Lasers.cs" />
     <Compile Include="ParallaxingBackground.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
