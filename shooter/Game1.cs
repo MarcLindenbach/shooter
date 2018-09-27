@@ -28,6 +28,9 @@ namespace shooter.Desktop
         ParallaxingBackground bgLayer2;
         Random random = new Random();
         SpriteFont scoreFont;
+        SpriteFont messageFont;
+        GameState state;
+        int score;
 
         public Game1()
         {
@@ -73,7 +76,9 @@ namespace shooter.Desktop
             bgLayer1 = new ParallaxingBackground();
             bgLayer2 = new ParallaxingBackground();
             rectBackground = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            scoreFont = Content.Load<SpriteFont>("Score");
+            scoreFont = Content.Load<SpriteFont>("Graphics\\Score");
+            messageFont = Content.Load<SpriteFont>("Graphics\\Message");
+            state = GameState.PAUSED;
             base.Initialize();
         }
 
@@ -106,8 +111,19 @@ namespace shooter.Desktop
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            previousKeyboardState = currentKeyboardState;
             currentKeyboardState = Keyboard.GetState();
+
+            if (state == GameState.PAUSED || state == GameState.GAME_OVER)
+            {
+                if (currentKeyboardState.IsKeyDown(Keys.Space))
+                {
+                    state = GameState.PLAYING;
+                }
+            }
+
+            if (state != GameState.PLAYING) return;
+
+            score += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
 
             UpdatePlayer(gameTime);
             lasers.Update(gameTime);
@@ -139,6 +155,10 @@ namespace shooter.Desktop
             if (currentKeyboardState.IsKeyDown(Keys.Space))
             {
                 lasers.ShootLaser(new Vector2(player.Position.X + (player.Width / 2), player.Position.Y + (player.Height / 2) - (lasers.Height / 2)));
+            }
+            if (currentKeyboardState.IsKeyDown(Keys.P))
+            {
+                state = GameState.PAUSED;
             }
 
             player.Position.X = MathHelper.Clamp(
@@ -178,6 +198,7 @@ namespace shooter.Desktop
                       player.Top > enemy.Bottom ||
                       player.Bottom < enemy.Top))
                 {
+                    player.Health -= 5;
                     enemy.Explode();
                 }
             });
@@ -203,7 +224,6 @@ namespace shooter.Desktop
                 (int)player.Position.Y,
                 player.PlayerAnimation.FrameWidth,
                 player.PlayerAnimation.FrameHeight);
-            spriteBatch.Draw(rect, coords, Color.Fuchsia);
 
             player.Draw(spriteBatch);
             lasers.Draw(spriteBatch);
@@ -214,10 +234,15 @@ namespace shooter.Desktop
                     (int)enemy.Position.Y,
                     enemy.EnemyAnimation.FrameWidth,
                     enemy.EnemyAnimation.FrameHeight);
-                spriteBatch.Draw(rect, enemyCoords, Color.Fuchsia);
                 enemy.Draw(spriteBatch);
             });
-            spriteBatch.DrawString(scoreFont, String.Format("Score {0:0}", gameTime.TotalGameTime.TotalMilliseconds), new Vector2(5, 5), Color.Black);
+            spriteBatch.DrawString(scoreFont, String.Format("Score {0:0}", score), new Vector2(5, 5), Color.Black);
+            spriteBatch.DrawString(scoreFont, String.Format("Health {0:0}", player.Health), new Vector2(5, 20), Color.Black);
+
+            if (state == GameState.PAUSED)
+            {
+                spriteBatch.DrawString(messageFont, "Game Paused, press <space> to continue", new Vector2(5, (GraphicsDevice.Viewport.Height / 2) - 32), Color.Black);
+            }
             spriteBatch.End();
             base.Draw(gameTime);
         }

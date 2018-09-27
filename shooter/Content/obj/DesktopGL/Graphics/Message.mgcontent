@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/gameFont.spritefont</SourceFile>
-  <SourceTime>2018-09-18T21:52:59.8114219-06:00</SourceTime>
-  <DestFile>C:/Users/Marc/Source/shooter/shooter/Content/bin/DesktopGL/Graphics/gameFont.xnb</DestFile>
-  <DestTime>2018-09-26T21:02:33.1844706-06:00</DestTime>
+  <SourceFile>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/Message.spritefont</SourceFile>
+  <SourceTime>2018-09-26T21:02:27.186909-06:00</SourceTime>
+  <DestFile>C:/Users/Marc/Source/shooter/shooter/Content/bin/DesktopGL/Graphics/Message.xnb</DestFile>
+  <DestTime>2018-09-26T21:02:33.619273-06:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2017-03-01T08:05:36-07:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

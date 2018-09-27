@@ -16,6 +16,7 @@
     <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/mine.png</File>
     <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/mineAnimation.png</File>
     <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/shipAnimation.png</File>
-    <File>C:/Users/Marc/Source/shooter/shooter/Content/Score.spritefont</File>
+    <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/Message.spritefont</File>
+    <File>C:/Users/Marc/Source/shooter/shooter/Content/Graphics/Score.spritefont</File>
   </SourceFiles>
 </SourceFileCollection>
