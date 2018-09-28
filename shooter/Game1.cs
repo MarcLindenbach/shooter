@@ -31,6 +31,7 @@ namespace shooter.Desktop
         SpriteFont messageFont;
         GameState state;
         int score;
+        double elapsedTime;
 
         public Game1()
         {
@@ -115,13 +116,14 @@ namespace shooter.Desktop
 
             if (state == GameState.PAUSED || state == GameState.GAME_OVER)
             {
-                if (currentKeyboardState.IsKeyDown(Keys.Space))
+                if (currentKeyboardState.IsKeyDown(Keys.Enter))
                 {
                     if (state == GameState.GAME_OVER)
                     {
                         enemyCount = startEnemyCount;
                         score = 0;
-                        enemies = new List<Enemy>();
+                        elapsedTime = 0;
+                        enemies.Clear(); 
                         player.Health = 100;
                         player.Position = new Vector2(
                             GraphicsDevice.Viewport.TitleSafeArea.X,
@@ -176,7 +178,8 @@ namespace shooter.Desktop
                 player.Position.Y, 0, 
                 GraphicsDevice.Viewport.Height - player.PlayerAnimation.FrameHeight * scale);
 
-            enemyCount = startEnemyCount + ((int)gameTime.TotalGameTime.TotalSeconds / 10);
+            elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
+            enemyCount = startEnemyCount + (int)(elapsedTime / 10);
 
             while (enemies.Count < enemyCount)
             {
@@ -255,11 +258,11 @@ namespace shooter.Desktop
 
             if (state == GameState.PAUSED)
             {
-                spriteBatch.DrawString(messageFont, "Game Paused, press <space> to continue", new Vector2(5, (GraphicsDevice.Viewport.Height / 2) - 32), Color.Black);
+                spriteBatch.DrawString(messageFont, "Game Paused, press <enter> to continue", new Vector2(5, (GraphicsDevice.Viewport.Height / 2) - 32), Color.Black);
             }
             if (state == GameState.GAME_OVER)
             {
-                spriteBatch.DrawString(messageFont, String.Format("Game Over, Score {0:0} press <space> to restart", score), new Vector2(5, (GraphicsDevice.Viewport.Height / 2) - 32), Color.Black);
+                spriteBatch.DrawString(messageFont, String.Format("Game Over, Score {0:0} press <enter> to restart", score), new Vector2(5, (GraphicsDevice.Viewport.Height / 2) - 32), Color.Black);
             }
             spriteBatch.End();
             spriteBatch.End();
