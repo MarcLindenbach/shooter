@@ -4,21 +4,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace shooter
 {
-    public class Enemy
+    public class Enemy : Sprite
     {
         public Animation EnemyAnimation;
         public Animation ExplosionAnimation;
-        public Vector2 Position;
         public Vector2 StartPosition;
         public bool Active;
         public int Speed;
         public int Amplitude;
-        public int Width => EnemyAnimation.FrameWidth;
-        public int Height => EnemyAnimation.FrameHeight;
-        public int Left => (int)Position.X;
-        public int Right => (int)Position.X + Width;
-        public int Top => (int)Position.Y;
-        public int Bottom => (int)Position.Y + Height;
 
         private Random random;
         private Game game;
@@ -53,6 +46,8 @@ namespace shooter
                 false);
             ExplosionAnimation.Active = false;
             Active = true;
+            Width = texture.Width;
+            Height = texture.Height;
             Reset();
         }
 

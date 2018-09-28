@@ -16,6 +16,8 @@ namespace shooter
             Position = position;
             Active = true;
             Health = 100;
+            Height = animation.FrameHeight;
+            Width = animation.FrameWidth;
         }
 
         public void Update(GameTime gameTime)
