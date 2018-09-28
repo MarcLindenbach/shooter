@@ -17,7 +17,6 @@ namespace shooter.Desktop
         List<Enemy> enemies;
         Lasers lasers;
         KeyboardState currentKeyboardState;
-        KeyboardState previousKeyboardState;
         float playerMoveSpeed;
         Texture2D mainBackground;
         Rectangle rectBackground;
@@ -39,12 +38,6 @@ namespace shooter.Desktop
             Content.RootDirectory = "Content";
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
             player = new Player();
@@ -80,13 +73,10 @@ namespace shooter.Desktop
             scoreFont = Content.Load<SpriteFont>("Graphics\\Score");
             messageFont = Content.Load<SpriteFont>("Graphics\\Message");
             state = GameState.PAUSED;
+            Reset();
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
@@ -96,41 +86,21 @@ namespace shooter.Desktop
             mainBackground = Content.Load<Texture2D>("Graphics/mainbackground");
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
             currentKeyboardState = Keyboard.GetState();
 
-            if (state == GameState.PAUSED || state == GameState.GAME_OVER)
+            if (currentKeyboardState.IsKeyDown(Keys.Enter) && state != GameState.PLAYING)
             {
-                if (currentKeyboardState.IsKeyDown(Keys.Enter))
+                if (state == GameState.GAME_OVER)
                 {
-                    if (state == GameState.GAME_OVER)
-                    {
-                        enemyCount = startEnemyCount;
-                        score = 0;
-                        elapsedTime = 0;
-                        enemies.Clear(); 
-                        player.Health = 100;
-                        player.Position = new Vector2(
-                            GraphicsDevice.Viewport.TitleSafeArea.X,
-                            GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
-                    }
-                    state = GameState.PLAYING;
+                    Reset();
                 }
+                state = GameState.PLAYING;
             }
 
             if (state != GameState.PLAYING) return;
@@ -222,10 +192,6 @@ namespace shooter.Desktop
             player.Update(gameTime);
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -267,6 +233,18 @@ namespace shooter.Desktop
             spriteBatch.End();
             spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        private void Reset()
+        {
+            enemyCount = startEnemyCount;
+            score = 0;
+            elapsedTime = 0;
+            enemies.Clear(); 
+            player.Health = 100;
+            player.Position = new Vector2(
+                GraphicsDevice.Viewport.TitleSafeArea.X,
+                GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
         }
     }
 }
