@@ -117,6 +117,16 @@ namespace shooter.Desktop
             {
                 if (currentKeyboardState.IsKeyDown(Keys.Space))
                 {
+                    if (state == GameState.GAME_OVER)
+                    {
+                        enemyCount = startEnemyCount;
+                        score = 0;
+                        enemies = new List<Enemy>();
+                        player.Health = 100;
+                        player.Position = new Vector2(
+                            GraphicsDevice.Viewport.TitleSafeArea.X,
+                            GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
+                    }
                     state = GameState.PLAYING;
                 }
             }
@@ -202,6 +212,11 @@ namespace shooter.Desktop
                     enemy.Explode();
                 }
             });
+            if (player.Health <= 0)
+            {
+                player.Health = 0;
+                state = GameState.GAME_OVER;
+            }
             player.Update(gameTime);
         }
 
@@ -243,6 +258,11 @@ namespace shooter.Desktop
             {
                 spriteBatch.DrawString(messageFont, "Game Paused, press <space> to continue", new Vector2(5, (GraphicsDevice.Viewport.Height / 2) - 32), Color.Black);
             }
+            if (state == GameState.GAME_OVER)
+            {
+                spriteBatch.DrawString(messageFont, String.Format("Game Over, Score {0:0} press <space> to restart", score), new Vector2(5, (GraphicsDevice.Viewport.Height / 2) - 32), Color.Black);
+            }
+            spriteBatch.End();
             spriteBatch.End();
             base.Draw(gameTime);
         }
