@@ -19,5 +19,11 @@ namespace shooter
             Width = width;
             Height = height;
         }
+
+        public Sprite() {
+            Position = new Vector2(0, 0);
+            Width = 0f;
+            Height = 0f;
+        }
     }
 }

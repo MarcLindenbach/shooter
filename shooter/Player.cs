@@ -4,24 +4,23 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace shooter
 {
-    public class Player
+    public class Player : Sprite
     {
         public Animation PlayerAnimation;
-        public Sprite PlayerSprite;
         public bool Active;
         public int Health;
 
         public void Initialize(Animation animation, Vector2 position)
         {
             PlayerAnimation = animation;
-            PlayerSprite = new Sprite(position, animation.FrameWidth, animation.FrameHeight);
+            Position = position;
             Active = true;
             Health = 100;
         }
 
         public void Update(GameTime gameTime)
         {
-            PlayerAnimation.Position = PlayerSprite.Position;
+            PlayerAnimation.Position = Position;
             PlayerAnimation.Update(gameTime);
         }
 

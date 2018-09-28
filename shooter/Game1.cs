@@ -118,34 +118,34 @@ namespace shooter.Desktop
         {
             if (currentKeyboardState.IsKeyDown(Keys.W))
             {
-                player.PlayerSprite.Position.Y -= playerMoveSpeed;
+                player.Position.Y -= playerMoveSpeed;
             }
             if (currentKeyboardState.IsKeyDown(Keys.S)) 
             {
-                player.PlayerSprite.Position.Y += playerMoveSpeed;
+                player.Position.Y += playerMoveSpeed;
             }
             if (currentKeyboardState.IsKeyDown(Keys.A))
             {
-                player.PlayerSprite.Position.X -= playerMoveSpeed;
+                player.Position.X -= playerMoveSpeed;
             }
             if (currentKeyboardState.IsKeyDown(Keys.D))
             {
-                player.PlayerSprite.Position.X += playerMoveSpeed;
+                player.Position.X += playerMoveSpeed;
             }
             if (currentKeyboardState.IsKeyDown(Keys.Space))
             {
-                lasers.ShootLaser(new Vector2(player.PlayerSprite.Position.X + (player.PlayerSprite.Width / 2), player.PlayerSprite.Position.Y + (player.PlayerSprite.Height / 2) - (lasers.Height / 2)));
+                lasers.ShootLaser(new Vector2(player.Position.X + (player.Width / 2), player.Position.Y + (player.Height / 2) - (lasers.Height / 2)));
             }
             if (currentKeyboardState.IsKeyDown(Keys.P))
             {
                 state = GameState.PAUSED;
             }
 
-            player.PlayerSprite.Position.X = MathHelper.Clamp(
-                player.PlayerSprite.Position.X, 0, 
+            player.Position.X = MathHelper.Clamp(
+                player.Position.X, 0, 
                 GraphicsDevice.Viewport.Width - player.PlayerAnimation.FrameWidth * scale);
-            player.PlayerSprite.Position.Y = MathHelper.Clamp(
-                player.PlayerSprite.Position.Y, 0, 
+            player.Position.Y = MathHelper.Clamp(
+                player.Position.Y, 0, 
                 GraphicsDevice.Viewport.Height - player.PlayerAnimation.FrameHeight * scale);
 
             elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
@@ -175,10 +175,10 @@ namespace shooter.Desktop
                     return false;
                 });
 
-                if (!(player.PlayerSprite.Left > enemy.Right || 
-                      player.PlayerSprite.Right < enemy.Left ||
-                      player.PlayerSprite.Top > enemy.Bottom ||
-                      player.PlayerSprite.Bottom < enemy.Top))
+                if (!(player.Left > enemy.Right || 
+                      player.Right < enemy.Left ||
+                      player.Top > enemy.Bottom ||
+                      player.Bottom < enemy.Top))
                 {
                     player.Health -= 5;
                     enemy.Explode();
@@ -203,8 +203,8 @@ namespace shooter.Desktop
             Texture2D rect = new Texture2D(GraphicsDevice, 1, 1);
             rect.SetData(new[] { Color.White });
             Rectangle coords = new Rectangle(
-                (int)player.PlayerSprite.Position.X,
-                (int)player.PlayerSprite.Position.Y,
+                (int)player.Position.X,
+                (int)player.Position.Y,
                 player.PlayerAnimation.FrameWidth,
                 player.PlayerAnimation.FrameHeight);
 
@@ -241,7 +241,7 @@ namespace shooter.Desktop
             elapsedTime = 0;
             enemies.Clear(); 
             player.Health = 100;
-            player.PlayerSprite.Position = new Vector2(
+            player.Position = new Vector2(
                 GraphicsDevice.Viewport.TitleSafeArea.X,
                 GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 2);
         }
