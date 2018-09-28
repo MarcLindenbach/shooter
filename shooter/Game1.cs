@@ -15,7 +15,7 @@ namespace shooter.Desktop
         SpriteBatch spriteBatch;
         Player player;
         List<Enemy> enemies;
-        Lasers lasers;
+        LaserManager lasers;
         KeyboardState currentKeyboardState;
         float playerMoveSpeed;
         Texture2D mainBackground;
@@ -62,7 +62,7 @@ namespace shooter.Desktop
             player.Initialize(playerAnimation, playerPosition);
             playerMoveSpeed = 8.0f;
 
-            lasers = new Lasers();
+            lasers = new LaserManager();
             Texture2D laserTexture = Content.Load<Texture2D>("Graphics\\laser");
             lasers.Initialise(laserTexture, GraphicsDevice.Viewport.TitleSafeArea.Width);
 
@@ -161,12 +161,12 @@ namespace shooter.Desktop
             // Check for collisions with mines
             enemies.ForEach(enemy =>
             {
-                lasers.Positions.RemoveAll(laser =>
+                lasers.Lasers.RemoveAll(laser =>
                 {
-                    if (!(laser.X > enemy.Right ||
-                          laser.X + lasers.Width < enemy.Left ||
-                          laser.Y > enemy.Bottom ||
-                          laser.Y + lasers.Height < enemy.Top))
+                    if (!(laser.Left > enemy.Right ||
+                          laser.Right < enemy.Left ||
+                          laser.Top > enemy.Bottom ||
+                          laser.Bottom < enemy.Top))
                     {
                         score += 100;
                         enemy.Explode();

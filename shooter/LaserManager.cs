@@ -5,10 +5,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace shooter
 {
-    class Lasers
+    class LaserManager
     {
         Texture2D Texture;
-        public List<Vector2> Positions;
+        public List<Sprite> Lasers;
         int Speed = 50;
         int viewportWidth;
         int elapsedTime;
@@ -19,7 +19,7 @@ namespace shooter
         public void Initialise(Texture2D texture, int viewportWidth)
         {
             Texture = texture;
-            Positions = new List<Vector2>();
+            Lasers = new List<Sprite>();
             this.viewportWidth = viewportWidth;
         }
 
@@ -27,7 +27,7 @@ namespace shooter
         {
             if (elapsedTime > reloadTime)
             {
-                Positions.Add(position);
+                Lasers.Add(new Sprite(position, Width, Height));
                 elapsedTime = 0;
             }
         }
@@ -35,16 +35,16 @@ namespace shooter
         public void Update(GameTime gameTime)
         {
             elapsedTime += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
-            for (int i = 0; i < Positions.Count; i++)
+            for (int i = 0; i < Lasers.Count; i++)
             {
-                Positions[i] = new Vector2(Positions[i].X + Speed, Positions[i].Y);
+                Lasers[i].Position = new Vector2(Lasers[i].Position.X + Speed, Lasers[i].Position.Y);
             }
-            Positions.RemoveAll(position => position.X >= viewportWidth);
+            Lasers.RemoveAll(laser => laser.Position.X >= viewportWidth);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Positions.ForEach(position => spriteBatch.Draw(Texture, position, Color.White));
+            Lasers.ForEach(laser => spriteBatch.Draw(Texture, laser.Position, Color.White));
         }
     }
 }
