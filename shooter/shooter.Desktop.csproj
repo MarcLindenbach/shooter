@@ -43,7 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Animation.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="GameState.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Lasers.cs" />
     <Compile Include="ParallaxingBackground.cs" />

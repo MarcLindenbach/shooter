@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>/Users/marc/source/shooter/shooter/Content/Graphics/gameFont.spritefont</SourceFile>
+  <SourceTime>2018-09-27T10:59:10.833047-06:00</SourceTime>
+  <DestFile>/Users/marc/source/shooter/shooter/Content/bin/DesktopGL/Content/Graphics/gameFont.xnb</DestFile>
+  <DestTime>2018-09-27T10:59:21.606814-06:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2018-09-06T07:51:48-06:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2018-09-06T07:51:48-06:00</ProcessorTime>
+  <Parameters>
+    <Key>PremultiplyAlpha</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

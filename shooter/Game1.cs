@@ -231,7 +231,6 @@ namespace shooter.Desktop
                 spriteBatch.DrawString(messageFont, String.Format("Game Over, Score {0:0} press <enter> to restart", score), new Vector2(5, (GraphicsDevice.Viewport.Height / 2) - 32), Color.Black);
             }
             spriteBatch.End();
-            spriteBatch.End();
             base.Draw(gameTime);
         }
 
