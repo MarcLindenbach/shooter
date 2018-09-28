@@ -133,8 +133,6 @@ namespace shooter.Desktop
 
             if (state != GameState.PLAYING) return;
 
-            score += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
-
             UpdatePlayer(gameTime);
             lasers.Update(gameTime);
             enemies.ForEach(enemy => enemy.Update(gameTime));
@@ -197,6 +195,7 @@ namespace shooter.Desktop
                           laser.Y > enemy.Bottom ||
                           laser.Y + lasers.Height < enemy.Top))
                     {
+                        score += 100;
                         enemy.Explode();
                         return true;
                     }
