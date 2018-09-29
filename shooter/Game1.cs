@@ -90,10 +90,8 @@ namespace shooter.Desktop
         {
         }
 
-        protected override void Update(GameTime gameTime)
+        private void UpdateGameState()
         {
-            currentKeyboardState = Keyboard.GetState();
-
             if (currentKeyboardState.IsKeyDown(Keys.Enter) && state != GameState.PLAYING)
             {
                 if (state == GameState.GAME_OVER)
@@ -103,11 +101,75 @@ namespace shooter.Desktop
                 state = GameState.PLAYING;
             }
 
+            if (currentKeyboardState.IsKeyDown(Keys.P))
+            {
+                state = GameState.PAUSED;
+            }
+
+            if (player.Health <= 0)
+            {
+                player.Health = 0;
+                state = GameState.GAME_OVER;
+            }
+        }
+
+        private void UpdateEnemies(GameTime gameTime)
+        {
+            enemyCount = startEnemyCount + (int)(elapsedTime / 10);
+
+            while (enemies.Count < enemyCount)
+            {
+                Enemy enemy = new Enemy();
+                enemy.Initialize(this, random);
+                enemies.Add(enemy);
+            }
+            enemies.ForEach(enemy => enemy.Update(gameTime));
+        }
+
+        public void UpdateLasers(GameTime gameTime)
+        {
+            if (currentKeyboardState.IsKeyDown(Keys.Space))
+            {
+                lasers.ShootLaser(new Vector2(player.Position.X + (player.Width / 2), player.Position.Y + (player.Height / 2) - (lasers.Height / 2)));
+            }
+            lasers.Update(gameTime);
+        }
+
+        public void HandleEnemyCollisions(GameTime gameTime)
+        {
+            enemies.ForEach(enemy =>
+            {
+                lasers.Lasers.RemoveAll(laser =>
+                {
+                    if (laser.Intersects(enemy))
+                    {
+                        score += 100;
+                        enemy.Explode();
+                        return true;
+                    }
+                    return false;
+                });
+
+                if (player.Intersects(enemy))
+                {
+                    player.Health -= 5;
+                    enemy.Explode();
+                }
+            });
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            currentKeyboardState = Keyboard.GetState();
+            UpdateGameState();
             if (state != GameState.PLAYING) return;
 
+            elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
+
             UpdatePlayer(gameTime);
-            lasers.Update(gameTime);
-            enemies.ForEach(enemy => enemy.Update(gameTime));
+            UpdateEnemies(gameTime);
+            UpdateLasers(gameTime);
+            HandleEnemyCollisions(gameTime);
 
             bgLayer1.Update(gameTime);
             bgLayer2.Update(gameTime);
@@ -132,14 +194,6 @@ namespace shooter.Desktop
             {
                 player.Position.X += playerMoveSpeed;
             }
-            if (currentKeyboardState.IsKeyDown(Keys.Space))
-            {
-                lasers.ShootLaser(new Vector2(player.Position.X + (player.Width / 2), player.Position.Y + (player.Height / 2) - (lasers.Height / 2)));
-            }
-            if (currentKeyboardState.IsKeyDown(Keys.P))
-            {
-                state = GameState.PAUSED;
-            }
 
             player.Position.X = MathHelper.Clamp(
                 player.Position.X, 0, 
@@ -148,41 +202,6 @@ namespace shooter.Desktop
                 player.Position.Y, 0, 
                 GraphicsDevice.Viewport.Height - player.PlayerAnimation.FrameHeight * scale);
 
-            elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
-            enemyCount = startEnemyCount + (int)(elapsedTime / 10);
-
-            while (enemies.Count < enemyCount)
-            {
-                Enemy enemy = new Enemy();
-                enemy.Initialize(this, random);
-                enemies.Add(enemy);
-            }
-
-            // Check for collisions with mines
-            enemies.ForEach(enemy =>
-            {
-                lasers.Lasers.RemoveAll(laser =>
-                {
-                    if (laser.Intersects(enemy))
-                    {
-                        score += 100;
-                        enemy.Explode();
-                        return true;
-                    }
-                    return false;
-                });
-
-                if (player.Intersects(enemy))
-                {
-                    player.Health -= 5;
-                    enemy.Explode();
-                }
-            });
-            if (player.Health <= 0)
-            {
-                player.Health = 0;
-                state = GameState.GAME_OVER;
-            }
             player.Update(gameTime);
         }
 
