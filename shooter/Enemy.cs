@@ -7,7 +7,6 @@ namespace shooter
     public class Enemy : Sprite
     {
         public Animation EnemyAnimation;
-        public Animation ExplosionAnimation;
         public Vector2 StartPosition;
         public bool Active;
         public int Speed;
@@ -21,7 +20,6 @@ namespace shooter
             this.random = random;
             this.game = game;
             Texture2D texture = game.Content.Load<Texture2D>("Graphics\\mineAnimation");
-            Texture2D explosionTexture = game.Content.Load<Texture2D>("Graphics\\explosion");
             EnemyAnimation = new Animation();
             EnemyAnimation.Initialize(
                 texture,
@@ -33,18 +31,6 @@ namespace shooter
                 Color.White, 
                 1f, 
                 true);
-            ExplosionAnimation = new Animation();
-            ExplosionAnimation.Initialize(
-                explosionTexture,
-                Vector2.Zero,
-                134,
-                134,
-                12,
-                45, 
-                Color.White, 
-                1f, 
-                false);
-            ExplosionAnimation.Active = false;
             Active = true;
             Width = texture.Width;
             Height = texture.Height;
@@ -61,18 +47,9 @@ namespace shooter
             Amplitude = random.Next(0, 100);
         }
 
-        public void Explode()
-        {
-            ExplosionAnimation.Position = Position - new Vector2(47);
-            ExplosionAnimation.Active = true;
-            EnemyAnimation.Active = true;
-            Reset();
-        }
-
         public void Update(GameTime gameTime)
         {
             EnemyAnimation.Update(gameTime);
-            ExplosionAnimation.Update(gameTime);
 
             if (!Active) return;
 
@@ -89,7 +66,6 @@ namespace shooter
         public void Draw(SpriteBatch spriteBatch) 
         {
             EnemyAnimation.Draw(spriteBatch);
-            ExplosionAnimation.Draw(spriteBatch);
         }
     }
 }

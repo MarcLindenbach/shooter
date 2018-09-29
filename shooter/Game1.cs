@@ -144,7 +144,7 @@ namespace shooter.Desktop
                     if (laser.Intersects(enemy))
                     {
                         score += 100;
-                        enemy.Explode();
+                        enemy.Reset();
                         return true;
                     }
                     return false;
@@ -153,7 +153,7 @@ namespace shooter.Desktop
                 if (player.Intersects(enemy))
                 {
                     player.Health -= 5;
-                    enemy.Explode();
+                    enemy.Reset();
                 }
             });
         }
