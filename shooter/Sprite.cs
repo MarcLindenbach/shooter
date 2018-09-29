@@ -25,5 +25,13 @@ namespace shooter
             Width = 0f;
             Height = 0f;
         }
+
+        public bool Intersects(Sprite otherSprite)
+        {
+          return !(Left > otherSprite.Right ||
+                   Right < otherSprite.Left ||
+                   Top > otherSprite.Bottom ||
+                   Bottom < otherSprite.Top);
+        }
     }
 }

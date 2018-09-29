@@ -163,10 +163,7 @@ namespace shooter.Desktop
             {
                 lasers.Lasers.RemoveAll(laser =>
                 {
-                    if (!(laser.Left > enemy.Right ||
-                          laser.Right < enemy.Left ||
-                          laser.Top > enemy.Bottom ||
-                          laser.Bottom < enemy.Top))
+                    if (laser.Intersects(enemy))
                     {
                         score += 100;
                         enemy.Explode();
@@ -175,10 +172,7 @@ namespace shooter.Desktop
                     return false;
                 });
 
-                if (!(player.Left > enemy.Right || 
-                      player.Right < enemy.Left ||
-                      player.Top > enemy.Bottom ||
-                      player.Bottom < enemy.Top))
+                if (player.Intersects(enemy))
                 {
                     player.Health -= 5;
                     enemy.Explode();
