@@ -27,7 +27,13 @@ namespace shooter
         {
             if (elapsedTime > reloadTime)
             {
-                Lasers.Add(new Sprite(position, Width, Height));
+                Lasers.Add(new Sprite
+                {
+                    Position = position,
+                    Width = Width,
+                    Height = Height,
+                    Texture = Texture
+                });
                 elapsedTime = 0;
             }
         }
@@ -44,7 +50,7 @@ namespace shooter
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            Lasers.ForEach(laser => spriteBatch.Draw(Texture, laser.Position, Color.White));
+            Lasers.ForEach(laser => laser.Draw(spriteBatch));
         }
     }
 }

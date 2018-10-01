@@ -228,10 +228,10 @@ namespace shooter.Desktop
 
             player.Position.X = MathHelper.Clamp(
                 player.Position.X, 0, 
-                GraphicsDevice.Viewport.Width - player.PlayerAnimation.FrameWidth * scale);
+                GraphicsDevice.Viewport.Width - player.Width * scale);
             player.Position.Y = MathHelper.Clamp(
                 player.Position.Y, 0, 
-                GraphicsDevice.Viewport.Height - player.PlayerAnimation.FrameHeight * scale);
+                GraphicsDevice.Viewport.Height - player.Height * scale);
 
             player.Update(gameTime);
         }
@@ -249,8 +249,8 @@ namespace shooter.Desktop
             Rectangle coords = new Rectangle(
                 (int)player.Position.X,
                 (int)player.Position.Y,
-                player.PlayerAnimation.FrameWidth,
-                player.PlayerAnimation.FrameHeight);
+                (int)player.Width,
+                (int)player.Height);
 
             player.Draw(spriteBatch);
             lasers.Draw(spriteBatch);

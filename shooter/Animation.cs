@@ -59,8 +59,7 @@ namespace shooter
                 if (currentFrame == frameCount)
                 {
                     currentFrame = 0;
-                    if (!Looping)
-                        Active = false;
+                    Active &= Looping;
                 }
                 elapsedTime = 0;
             }
