@@ -15,6 +15,11 @@ namespace shooter
         public float Right => Position.X + Width;
         public float Top => Position.Y;
         public float Bottom => Position.Y + Height;
+        public Rectangle AsRectangle => new Rectangle(
+            (int)Left,
+            (int)Top,
+            (int)Width,
+            (int)Height);
 
         public Sprite() {
             Position = new Vector2(0, 0);
@@ -32,6 +37,12 @@ namespace shooter
 
         public virtual void Draw(SpriteBatch spriteBatch) {
             spriteBatch.Draw(Texture, Position, Color.White);
+        }
+
+        public virtual void DrawBoundingBox(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice) {
+            Texture2D rect = new Texture2D(graphicsDevice, 1, 1);
+            rect.SetData(new[] { Color.White });
+            spriteBatch.Draw(rect, AsRectangle, Color.Red);
         }
     }
 }

@@ -4,9 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace shooter
 {
-    public class Enemy : Sprite
+    public class Enemy : AnimatedSprite
     {
-        public Animation EnemyAnimation;
         public Vector2 StartPosition;
         public bool Active;
         public int Speed;
@@ -20,8 +19,8 @@ namespace shooter
             this.random = random;
             this.game = game;
             Texture2D texture = game.Content.Load<Texture2D>("Graphics\\mineAnimation");
-            EnemyAnimation = new Animation();
-            EnemyAnimation.Initialize(
+            SpriteAnimation = new Animation();
+            SpriteAnimation.Initialize(
                 texture,
                 Vector2.Zero,
                 47,
@@ -32,40 +31,33 @@ namespace shooter
                 1f, 
                 true);
             Active = true;
-            Width = EnemyAnimation.FrameWidth;
-            Height = EnemyAnimation.FrameHeight;
+            Width = SpriteAnimation.FrameWidth;
+            Height = SpriteAnimation.FrameHeight;
             Reset();
         }
 
         public void Reset()
         {
             Position = new Vector2(
-                game.GraphicsDevice.Viewport.Width + (random.Next(0, 5) * EnemyAnimation.FrameWidth),
-                random.Next(0, game.GraphicsDevice.Viewport.Height - EnemyAnimation.FrameHeight));
+                game.GraphicsDevice.Viewport.Width + (random.Next(0, 5) * Width),
+                random.Next(0, game.GraphicsDevice.Viewport.Height - (int)Height));
             StartPosition = Position;
             Speed = random.Next(-5, -1);
             Amplitude = random.Next(0, 100);
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            EnemyAnimation.Update(gameTime);
-
             if (!Active) return;
 
             Position.X += Speed;
             Position.Y = (float)(Math.Sin((Double)Position.X / 100) * Amplitude) + StartPosition.Y;
 
-            if (Position.X < -EnemyAnimation.FrameWidth)
+            if (Position.X < -Width)
             {
                 Reset();
             }
-            EnemyAnimation.Position = Position;
-        }
-
-        public void Draw(SpriteBatch spriteBatch) 
-        {
-            EnemyAnimation.Draw(spriteBatch);
+            base.Update(gameTime);
         }
     }
 }

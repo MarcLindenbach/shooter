@@ -244,25 +244,11 @@ namespace shooter.Desktop
             bgLayer1.Draw(spriteBatch);
             bgLayer2.Draw(spriteBatch);
 
-            Texture2D rect = new Texture2D(GraphicsDevice, 1, 1);
-            rect.SetData(new[] { Color.White });
-            Rectangle coords = new Rectangle(
-                (int)player.Position.X,
-                (int)player.Position.Y,
-                (int)player.Width,
-                (int)player.Height);
 
+            player.DrawBoundingBox(spriteBatch, GraphicsDevice);
             player.Draw(spriteBatch);
             lasers.Draw(spriteBatch);
-            enemies.ForEach(enemy =>
-            {
-                Rectangle enemyCoords = new Rectangle(
-                    (int)enemy.Position.X,
-                    (int)enemy.Position.Y,
-                    enemy.EnemyAnimation.FrameWidth,
-                    enemy.EnemyAnimation.FrameHeight);
-                enemy.Draw(spriteBatch);
-            });
+            enemies.ForEach(enemy => enemy.Draw(spriteBatch));
             ExplosionAnimations.ForEach(explosion => explosion.Draw(spriteBatch));
             spriteBatch.DrawString(scoreFont, String.Format("Score {0:0}", score), new Vector2(5, 5), Color.Black);
             spriteBatch.DrawString(scoreFont, String.Format("Health {0:0}", player.Health), new Vector2(5, 20), Color.Black);
