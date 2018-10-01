@@ -32,8 +32,8 @@ namespace shooter
                 1f, 
                 true);
             Active = true;
-            Width = texture.Width;
-            Height = texture.Height;
+            Width = EnemyAnimation.FrameWidth;
+            Height = EnemyAnimation.FrameHeight;
             Reset();
         }
 
