@@ -31,6 +31,8 @@ namespace shooter.Desktop
         GameState state;
         int score;
         double elapsedTime;
+        Texture2D ExplosionTexture;
+        List<Animation> ExplosionAnimations;
 
         public Game1()
         {
@@ -65,6 +67,9 @@ namespace shooter.Desktop
             lasers = new LaserManager();
             Texture2D laserTexture = Content.Load<Texture2D>("Graphics\\laser");
             lasers.Initialise(laserTexture, GraphicsDevice.Viewport.TitleSafeArea.Width);
+
+            ExplosionAnimations = new List<Animation>();
+            ExplosionTexture = Content.Load<Texture2D>("Graphics\\explosion");
 
             enemies = new List<Enemy>();
             bgLayer1 = new ParallaxingBackground();
@@ -113,6 +118,29 @@ namespace shooter.Desktop
             }
         }
 
+        private void CreateExplosion(Vector2 position)
+        {
+            Animation explosionAnimation = new Animation();
+            explosionAnimation.Initialize(
+                ExplosionTexture,
+                Vector2.Zero,
+                134,
+                134,
+                12,
+                30, 
+                Color.White, 
+                1f, 
+                false);
+            explosionAnimation.Position = position;
+            ExplosionAnimations.Add(explosionAnimation);
+        }
+
+        private void UpdateExplosions(GameTime gameTime)
+        {
+            ExplosionAnimations.RemoveAll(explosion => !explosion.Active);
+            ExplosionAnimations.ForEach(explosion => explosion.Update(gameTime));
+        }
+
         private void UpdateEnemies(GameTime gameTime)
         {
             enemyCount = startEnemyCount + (int)(elapsedTime / 10);
@@ -144,6 +172,7 @@ namespace shooter.Desktop
                     if (laser.Intersects(enemy))
                     {
                         score += 100;
+                        CreateExplosion(enemy.Position - new Vector2(enemy.Width / 2));
                         enemy.Reset();
                         return true;
                     }
@@ -153,6 +182,7 @@ namespace shooter.Desktop
                 if (player.Intersects(enemy))
                 {
                     player.Health -= 5;
+                    CreateExplosion(enemy.Position - new Vector2(enemy.Width / 2));
                     enemy.Reset();
                 }
             });
@@ -169,6 +199,7 @@ namespace shooter.Desktop
             UpdatePlayer(gameTime);
             UpdateEnemies(gameTime);
             UpdateLasers(gameTime);
+            UpdateExplosions(gameTime);
             HandleEnemyCollisions(gameTime);
 
             bgLayer1.Update(gameTime);
@@ -232,6 +263,7 @@ namespace shooter.Desktop
                     enemy.EnemyAnimation.FrameHeight);
                 enemy.Draw(spriteBatch);
             });
+            ExplosionAnimations.ForEach(explosion => explosion.Draw(spriteBatch));
             spriteBatch.DrawString(scoreFont, String.Format("Score {0:0}", score), new Vector2(5, 5), Color.Black);
             spriteBatch.DrawString(scoreFont, String.Format("Health {0:0}", player.Health), new Vector2(5, 20), Color.Black);
 
